@@ -35,24 +35,7 @@ const createUsersTable = async () => {
     "Error creating users table:",
   );
 
-  // Step 2: Insert default admin if not exists
-  await runQuery(
-    `INSERT INTO crm_tbl_admins 
-      (uuid, full_name, email, password, role, privileges, status)
-     SELECT 
-      UUID(), 
-      'Anand Pohankar', 
-      'crm@eparivartan.com', 
-      '', 
-      'Root Admin', 
-      'Both', 
-      TRUE
-     WHERE NOT EXISTS (
-       SELECT 1 FROM crm_tbl_admins WHERE email = 'crm@eparivartan.com'
-     )`,
-    "Default admin ensured",
-    "Error inserting default admin:",
-  );
+  // Step 2: Insert default admin if not exis
 };
 
 // Leads
