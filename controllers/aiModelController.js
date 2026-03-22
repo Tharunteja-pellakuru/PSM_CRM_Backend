@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 const getAllAiModels = async (req, res) => {
   try {
     const query =
-      "SELECT id, name, provider, model_id, api_key, is_default, created_at FROM crm_tbl_aiModels ORDER BY created_at DESC";
+      "SELECT id, name, provider, model_id, api_key, is_default, created_at FROM crm_tbl_aiModels ORDER BY created_at ASC";
     db.query(query, (err, results) => {
       if (err) {
         console.error("Error fetching AI models:", err);
@@ -30,8 +30,6 @@ const createAiModel = async (req, res) => {
       });
     }
 
-    const id = `ai-${uuidv4()}`;
-
     // If setting as default, unset other defaults
     if (isDefault) {
       db.query("UPDATE crm_tbl_aiModels SET is_default = FALSE", (err) => {
@@ -40,18 +38,18 @@ const createAiModel = async (req, res) => {
     }
 
     const query =
-      "INSERT INTO crm_tbl_aiModels (id, name, provider, model_id, api_key, is_default) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO crm_tbl_aiModels (name, provider, model_id, api_key, is_default) VALUES (?, ?, ?, ?, ?)";
     db.query(
       query,
-      [id, name, provider, modelId, apiKey, isDefault || false],
-      (err) => {
+      [name, provider, modelId, apiKey, isDefault || false],
+      (err, result) => {
         if (err) {
           console.error("Error creating AI model:", err);
           return res.status(500).json({ message: "Failed to create AI model" });
         }
         res.status(201).json({
           message: "AI model created successfully",
-          id,
+          id: result.insertId,
         });
       },
     );
