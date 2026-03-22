@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 });
 
 const seed = async () => {
-  const email = "chaitanya@parivartan.crm";
+  const email = "crm@eparivartan.com";
   const password = "Password@123";
   const hashedPassword = await bcrypt.hash(password, 10);
   const uuid = uuidv4();
@@ -36,13 +36,13 @@ const seed = async () => {
               console.log("Admin user seeded successfully!");
             }
             process.exit(0);
-          }
+          },
         );
       } else {
         console.log("Admin user already exists.");
         process.exit(0);
       }
-    }
+    },
   );
 };
 
